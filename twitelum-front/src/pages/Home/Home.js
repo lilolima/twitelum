@@ -6,7 +6,7 @@ import Widget from './components/Widget'
 import TrendsArea from './components/TrendsArea'
 import Tweet from './components/Tweet'
 
-class App extends Component {
+class Home extends Component {
     constructor() {
         super()
         this.state = {
@@ -84,4 +84,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Home;

@@ -13,8 +13,20 @@ import './assets/css/novoTweet.css'
 // import './index.css';
 
 
-import App from './App';
+import Home from '.src/pages/Home';
+import LoginPage from '.src/pages/LoginPage';
+
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+ReactDOM.render(
+<BrowserRouter>
+    <Switch>
+        <Route path="/" exact component={App} />
+        <Route path="/login" component={LoginPage} />
+    </Switch>
+</BrowserRouter>
+, document.getElementById('root'));
+
 registerServiceWorker();
