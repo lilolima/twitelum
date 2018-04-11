@@ -1,32 +1,87 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, Fragment } from 'react';
+import Cabecalho from '../../components/Cabecalho'
+import NavMenu from '../../components/NavMenu'
+import Dashboard from '../../components/Dashboard'
+import Widget from '../../components/Widget'
+import TrendsArea from '../../components/TrendsArea'
+import Tweet from '../../components/Tweet'
 
-// CSS Global
-import './assets/css/reset.css'
-import './assets/css/container.css'
-import './assets/css/btn.css'
-import './assets/css/icon.css'
-import './assets/css/iconHeart.css'
-import './assets/css/notificacao.css'
+class Home extends Component {
+    constructor() {
+        super()
+        this.state = {
+            novoTweet: '',
+            tweets: []
+        }
+        this.adicionaTweet = this.adicionaTweet.bind(this)
+    }
 
-import './assets/css/novoTweet.css'
-// import './index.css';
+    adicionaTweet(infosDoEvento) {
+        infosDoEvento.preventDefault()
+        //Pegar o vaue do input
+        const novoTweet = this.state.novoTweet
+        const tweetsAntigos = this.state.tweets
+        if (novoTweet) {
+            this.setState({
+                tweets: [novoTweet, ...tweetsAntigos],
+                novoTweet: ''
+            })
+        }
+    }
 
+    render() {
+        return (
+            <Fragment>
+                <Cabecalho>
+                    <NavMenu usuario="@omariosouto" />
+                </Cabecalho>
+                <div className="container">
+                    <Dashboard>
+                        <Widget>
+                            <form className="novoTweet" onSubmit={this.adicionaTweet}>
+                                <div className="novoTweet__editorArea">
+                                    <span className={`
+                                        novoTweet__status
+                                        ${this.state.novoTweet.length > 140
+                                            ? 'novoTweet__status--invalido' : ''}
+                                        `}>
+                                        {this.state.novoTweet.length}/140
+                                    </span>
+                                    <textarea
+                                        className="novoTweet__editor"
+                                        value={this.state.novoTweet}
+                                        onInput={(event) => this.setState({ novoTweet: event.target.value })}
+                                        placeholder="O que está acontecendo?">
+                                    </textarea>
+                                </div>
+                                <button type="submit" className="novoTweet__envia"
+                                    disabled={this.state.novoTweet.length > 140 ? true : false}
+                                    type="submit">
+                                    Tweetar
+                            </button>
+                            </form>
+                        </Widget>
+                        <Widget>
+                            <TrendsArea />
+                        </Widget>
+                    </Dashboard>
+                    <Dashboard posicao="centro">
+                        <Widget>
+                            <div className="tweetsArea">
+                                {this.state.tweets.map(
+                                    (tweetInfo, index) =>
+                                        <Tweet
+                                            key={tweetInfo + index}
+                                            texto={tweetInfo} />
+                                )
+                                }
+                            </div>
+                        </Widget>
+                    </Dashboard>
+                </div>
+            </Fragment >
+        );
+    }
+}
 
-import Home from '.src/pages/Home';
-import LoginPage from '.src/pages/LoginPage';
-
-import registerServiceWorker from './registerServiceWorker';
-
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-
-ReactDOM.render(
-<BrowserRouter>
-    <Switch>
-        <Route path="/" exact component={App} />
-        <Route path="/login" component={LoginPage} />
-    </Switch>
-</BrowserRouter>
-, document.getElementById('root'));
-
-registerServiceWorker();
+export default Home;
