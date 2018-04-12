@@ -3,22 +3,50 @@ import Widget from '../../components/Widget'
 
 import './loginPage.css'
 
-
 class LoginPage extends Component {
+
+    fazerLogin = (event) => {
+        event.preventDefault()
+        const dadosDeLogin = {
+            login: this.inputLogin.value,
+            senha: this.inputSenha.value
+        }
+
+        fetch('http://localhost:3001/login', {
+            method: 'POST',
+            body: JSON.stringify(dadosDeLogin),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw response;
+                }
+                return response.json()
+            })
+            .then((responseEmJSON) => {
+                console.log('TOKEN', responseEmJSON.token)
+                localStorage.setItem('TOKEN', responseEmJSON.token)
+            })
+            .catch((responseError) => {
+                responseError.json().then((response) => {
+                    console.log(response)
+                })
+            })
+    }
+
     render() {
         return (
             <div className="loginPage">
                 <div className="container">
                     <Widget>
                         <h1 className="loginPage__title">Twitelum</h1>
-                        <form className="loginPage__form" action="/">
+                        <form className="loginPage__form" action="/" onSubmit={this.fazerLogin}>
                             <div className="loginPage__inputWrap">
-                                <label className="loginPage__label" htmlFor="login">Login</label> 
-                                <input className="loginPage__input" type="text" id="login" name="login"/>
+                                <label className="loginPage__label" htmlFor="login">Login</label>
+                                <input ref={(inputLogin) => this.inputLogin = inputLogin} className="loginPage__input" type="text" id="login" name="login" />
                             </div>
                             <div className="loginPage__inputWrap">
-                                <label className="loginPage__label" htmlFor="senha">Senha</label> 
-                                <input className="loginPage__input" type="password" id="senha" name="senha"/>
+                                <label className="loginPage__label" htmlFor="senha">Senha</label>
+                                <input ref={(inputSenha) => this.inputSenha = inputSenha} className="loginPage__input" type="password" id="senha" name="senha" />
                             </div>
                             {/* <div className="loginPage__errorBox">
                                 Mensagem de erro!
