@@ -6,7 +6,7 @@ import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
 import Modal from '../../components/Modal'
-
+import PropTypes from 'prop-types'
 
 class Home extends Component {
     constructor(props) {
@@ -21,19 +21,28 @@ class Home extends Component {
         this.adicionaTweet = this.adicionaTweet.bind(this)
     }
 
+    componentWillMount() {
+        this.context.store.subscribe(() => {
+            console.log('roda sempre que tiver um dispatch')
+            this.setState({
+                tweets: this.context.store.getState()
+            })
+        })
+    }
+
     componentDidMount() {
         console.log('DidMount')
         fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`)
             .then((respostaDoServer) => respostaDoServer.json())
             .then((tweetsDoServidor) => {
                 console.log(tweetsDoServidor)
-                this.setState({
-                    tweets: tweetsDoServidor
-                })
+                this.context.store.dispatch({ type: 'CARREGA_TWEETS', tweets: tweetsDoServidor })
+                //this.setState({
+                    //tweets: tweetsDoServidor
+                //})
             })
     }
 
-    // Talk: Anjana Vakil: Learning Functional Programming with JavaScript - JSUnconf 2016
     adicionaTweet(infosDoEvento) {
         infosDoEvento.preventDefault()
         // Pegar o value do input
@@ -163,6 +172,10 @@ class Home extends Component {
             </Fragment>
         );
     }
+}
+
+Home.contextType = {
+    store: PropTypes.object.isRequired
 }
 
 export default Home;
