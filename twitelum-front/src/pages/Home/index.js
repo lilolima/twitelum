@@ -6,7 +6,9 @@ import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
 import Modal from '../../components/Modal'
+
 import PropTypes from 'prop-types'
+import * as TweetsAPI from '../../apis/TweetAPI'
 
 class Home extends Component {
     constructor(props) {
@@ -32,15 +34,7 @@ class Home extends Component {
 
     componentDidMount() {
         console.log('DidMount')
-        fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`)
-            .then((respostaDoServer) => respostaDoServer.json())
-            .then((tweetsDoServidor) => {
-                console.log(tweetsDoServidor)
-                this.context.store.dispatch({ type: 'CARREGA_TWEETS', tweets: tweetsDoServidor })
-                //this.setState({
-                    //tweets: tweetsDoServidor
-                //})
-            })
+        this.context.store.dispatch(TweetsAPI.carrega())
     }
 
     adicionaTweet(infosDoEvento) {
