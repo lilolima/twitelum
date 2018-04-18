@@ -80,7 +80,6 @@ class Tweet extends Component {
         )
     }
 }
-// import PropTypes from 'prop-types'
 
 Tweet.propTypes = {
     removeHandler: PropTypes.func.isRequired,

@@ -42,35 +42,19 @@ class Home extends Component {
         // Pegar o value do input
         const novoTweet = this.state.novoTweet
 
-        if (novoTweet) {
-            // Manda o texto e o TOKEN
-            fetch(`http://localhost:3001/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`,
-                { method: 'POST', body: JSON.stringify({ conteudo: novoTweet }) })
-                .then((respostaDoServer) => {
-                    return respostaDoServer.json()
-                })
-                .then((tweetProntoDoServer) => {
-                    console.log(tweetProntoDoServer)
-                    this.setState({
-                        tweets: [tweetProntoDoServer, ...this.state.tweets]
-                    })
-                })
-        }
+        this.context.store.dispatch(TweetsAPI.adiciona(novoTweet))
+
+        this.setState({
+            novoTweet: ''
+        })
     }
 
     removeTweet = (idDoTweet) => {
-        fetch(`http://localhost:3001/tweets/${idDoTweet}?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`, {
-            method: 'DELETE'
+        this.context.store.dispatch(TweetsAPI.remove(idDoTweet))
+
+        this.setState({
+           tweetAtivo: {}
         })
-            .then((respostaDoServer) => respostaDoServer.json())
-            .then((respostaPronta) => {
-                const tweetsAtualizados = this
-                    .state.tweets.filter((tweetAtual) => tweetAtual._id !== idDoTweet)
-                this.setState({
-                    tweets: tweetsAtualizados,
-                    tweetAtivo: {}
-                })
-            })
     }
 
     abreModalParaTweet = (idDoTweetQueVaiNoModal, event) => {
@@ -168,7 +152,7 @@ class Home extends Component {
     }
 }
 
-Home.contextType = {
+Home.contextTypes = {
     store: PropTypes.object.isRequired
 }
 

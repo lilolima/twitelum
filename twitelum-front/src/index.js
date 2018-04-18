@@ -19,7 +19,7 @@ import Routes from './routes'
 
 //Coisas do Redux
 import { Provider } from 'react-redux'
-import './store'
+import store from './store'
 
 ReactDOM.render(
     <Provider store={store}>
