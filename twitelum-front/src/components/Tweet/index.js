@@ -3,40 +3,6 @@ import PropTypes from 'prop-types'
 import './tweet.css'
 
 class Tweet extends Component {
-    /*constructor(props) {
-        super()
-
-        this.state = {
-            likeado: props.tweetInfo.likeado,
-            totalLikes: props.tweetInfo.totalLikes
-        }
-    }*/
-
-   // handleLike = (idDoTweet) => {
-        // Verificar se esta likeado
-        // if(this.state.likeado) {
-        //     this.setState({
-        //         likeado: false,
-        //         totalLikes: this.state.totalLikes - 1
-        //     })            
-        // } else {
-        //     this.setState({
-        //         likeado: true,
-        //         totalLikes: this.state.totalLikes + 1
-        //     })                        
-        // }
-        //const { likeado, totalLikes } = this.state // Destructuring
-
-       /* this.setState({likeado: !likeado,
-            totalLikes: likeado ? totalLikes - 1 : totalLikes + 1
-        })
-        // Mandar tudo pra API
-        fetch(`http://localhost:3001/tweets/${idDoTweet}/like?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`,
-            { method: 'POST'}
-        )
-        .then(respostaDoServer =>  respostaDoServer.json() )
-        .then((respostaPronta) => console.log(respostaPronta))*/
-   // }
 
     render() {
         return (

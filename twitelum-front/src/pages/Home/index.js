@@ -27,8 +27,8 @@ class Home extends Component {
         this.context.store.subscribe(() => {
             console.log('roda sempre que tiver um dispatch')
             this.setState({
-                tweets: this.context.store.getState().lista,
-                tweetAtivo: this.context.store.getState().tweetAtivo
+                tweets: this.context.store.getState().tweets.lista,
+                tweetAtivo: this.context.store.getState().tweets.tweetAtivo
             })
         })
     }
@@ -128,7 +128,14 @@ class Home extends Component {
                             tweetInfo={this.state.tweetAtivo} />
                     </Widget>
                 </Modal>
-
+                {
+                    this.context.store.getState().notificacao &&
+                    <div className="notificacaoMsg"
+                        onAnimationEnd={() => this.context.store.dispatch({
+                            type: 'REMOVE_NOTIFICACAO'})} >
+                        {this.context.store.getState().notificacao}
+                    </div>
+                }
 
             </Fragment>
         );

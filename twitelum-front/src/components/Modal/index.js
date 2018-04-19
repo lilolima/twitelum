@@ -6,7 +6,7 @@ class Modal extends Component {
         return (
             <div className={`modal ${this.props.isAberto ? 'modal--active' : ''}`} onClick={this.props.fechaModal}>
                 {this.props.isAberto &&
-                    <div className="modal_wrap">
+                    <div className="modal__wrap">
                         {this.props.children}
                     </div>
                 }

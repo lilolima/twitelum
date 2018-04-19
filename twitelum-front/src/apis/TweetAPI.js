@@ -39,7 +39,9 @@ export const remove = (idDoTweet) => {
 }
 
 export const like = (idDoTweet) => {
+    // add fetch
     return (dispatch) => {
         dispatch({ type: 'LIKE', idDoTweet })
+        dispatch({ type: 'ADD_NOTIFICACAO', msg:'alo alo vc deu like' })
     }
 }
