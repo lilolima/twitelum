@@ -33,12 +33,13 @@ export const remove = (idDoTweet) => {
             .then((respostaDoServer) => respostaDoServer.json())
             .then((respostaPronta) => {
                 dispatch({ type: 'REMOVE_TWEET', idDoTweet: idDoTweet })
-                /*const tweetsAtualizados = this
-                    .state.tweets.filter((tweetAtual) => tweetAtual._id !== idDoTweet)
-                this.setState({
-                    tweets: tweetsAtualizados,
-                    tweetAtivo: {}
-                })*/
+                dispatch({ type: 'REMOVE_TWEET_ATIVO' })
             })
+    }
+}
+
+export const like = (idDoTweet) => {
+    return (dispatch) => {
+        dispatch({ type: 'LIKE', idDoTweet })
     }
 }

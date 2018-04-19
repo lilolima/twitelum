@@ -4,7 +4,7 @@ import NavMenu from '../../components/NavMenu'
 import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
-import Tweet from '../../components/Tweet'
+import Tweet from '../../containers/TweetPadrao'
 import Modal from '../../components/Modal'
 
 import PropTypes from 'prop-types'
@@ -27,13 +27,13 @@ class Home extends Component {
         this.context.store.subscribe(() => {
             console.log('roda sempre que tiver um dispatch')
             this.setState({
-                tweets: this.context.store.getState()
+                tweets: this.context.store.getState().lista,
+                tweetAtivo: this.context.store.getState().tweetAtivo
             })
         })
     }
 
     componentDidMount() {
-        console.log('DidMount')
         this.context.store.dispatch(TweetsAPI.carrega())
     }
 
@@ -41,19 +41,9 @@ class Home extends Component {
         infosDoEvento.preventDefault()
         // Pegar o value do input
         const novoTweet = this.state.novoTweet
-
         this.context.store.dispatch(TweetsAPI.adiciona(novoTweet))
-
         this.setState({
             novoTweet: ''
-        })
-    }
-
-    removeTweet = (idDoTweet) => {
-        this.context.store.dispatch(TweetsAPI.remove(idDoTweet))
-
-        this.setState({
-           tweetAtivo: {}
         })
     }
 
@@ -62,20 +52,14 @@ class Home extends Component {
         // Fazer alguma operação no array de tweets
         const ignoraModal = event.target.closest('.ignoraModal')
         if (!ignoraModal) {
-            const tweetAtivo = this.state
-                .tweets
-                .find((tweetAtual) => tweetAtual._id === idDoTweetQueVaiNoModal)
-            this.setState({
-                tweetAtivo: tweetAtivo
-            })
+            this.context.store.dispatch({ type: 'ADD_TWEET_ATIVO', idDoTweetQueVaiNoModal })
         }
     }
+
     fechaModal = (event) => {
         const isModal = event.target.classList.contains('modal')
         if (isModal) {
-            this.setState({
-                tweetAtivo: {}
-            })
+            this.context.store.dispatch({ type: 'REMOVE_TWEET_ATIVO' })
         }
     }
 
@@ -125,7 +109,6 @@ class Home extends Component {
                                     Boolean(this.state.tweets.length) && this.state.tweets.map((tweet, index) =>
                                         <Tweet
                                             key={tweet._id}
-                                            removeHandler={() => this.removeTweet(tweet._id)}
                                             tweetInfo={tweet}
                                             handleModal={(event) => this.abreModalParaTweet(tweet._id, event)}
                                             texto={tweet.conteudo} />
